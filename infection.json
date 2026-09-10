@@ -1,0 +1,12 @@
+{
+    "$schema": "https://raw.githubusercontent.com/infection/infection/master/resources/schema.json",
+    "source": {"directories": ["src"]},
+    "timeout": 15,
+    "logs": {"text": "build/infection.log", "summary": "build/infection-summary.log", "json": "build/infection.json"},
+    "mutators": {"@default": true},
+    "testFramework": "phpunit",
+    "testFrameworkOptions": "--testsuite=Unit --order-by=default",
+    "initialTestsPhpOptions": "-d pcov.enabled=1 -d pcov.directory=src",
+    "minMsi": 100,
+    "minCoveredMsi": 100
+}

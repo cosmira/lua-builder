@@ -1,0 +1,27 @@
+name: Coding Guidelines
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+          tools: composer:v2
+      - run: composer update --prefer-dist --no-interaction --no-progress
+      - run: composer validate --strict
+      - run: composer lint
+      - run: composer analyse
+      - run: composer refactor:check
+      - run: composer audit

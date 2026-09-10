@@ -1,0 +1,24 @@
+name: Bug report
+description: Report incorrect output or unexpected behavior.
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal PHP example
+      description: Include the input, generated Lua, and expected result. Remove private data.
+      render: php
+    validations:
+      required: true
+  - type: textarea
+    id: versions
+    attributes:
+      label: Versions
+      description: Package version, PHP version, Lua implementation and version.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Actual and expected behavior
+    validations:
+      required: true

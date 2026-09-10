@@ -1,0 +1,39 @@
+name: Code Coverage
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      LUA_BIN: lua5.1
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: pcov
+          tools: composer:v2
+      - run: sudo apt-get update && sudo apt-get install -y lua5.1
+      - run: composer update --prefer-dist --no-interaction --no-progress
+      - name: Require 100% line coverage
+        run: composer test:coverage
+      - name: Require 100% mutation score
+        run: composer test:mutation
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: quality-reports
+          path: |
+            build/clover.xml
+            build/coverage
+            build/infection*
+          if-no-files-found: error
+          retention-days: 14

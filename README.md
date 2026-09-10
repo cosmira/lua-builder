@@ -115,12 +115,25 @@ end
 
 Expressions are immutable. Scripts accumulate commands and can be cloned to
 create independent variants. Literal strings preserve arbitrary bytes, including
-quotes, UTF-8, and NUL. Names and operators are validated.
+quotes, UTF-8 emoji, Windows-1251, Japanese encodings, and NUL. No encoding
+conversion or Unicode normalization is performed. Names and operators are validated.
 
 Lua's data model applies: lists start at 1, `nil` removes table entries, and numeric
 precision depends on the Lua runtime. Raw source is an explicit escape hatch for
 trusted code only. See the [API reference](docs/reference.md) for all operations,
 value semantics, errors, and supported syntax.
+
+## Building rules from application data
+
+The executable [rules example](examples/rules.php) combines nested filter tables,
+optional date bounds, generated callbacks, and ordered actions. PHP decides which
+rules to emit; Lua evaluates their conditions later. Opaque rule IDs are table keys,
+so they can contain punctuation or Japanese text without becoming function names.
+Runtime tests exercise matching, short-circuiting, date boundaries, and action order.
+
+Keep model access, sorting, encoding conversion, and domain validation in your
+application. Pass plain arrays and values into the builder. The host supplies
+application behavior when Lua executes.
 
 ## Development
 

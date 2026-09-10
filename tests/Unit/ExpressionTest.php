@@ -37,6 +37,13 @@ final class ExpressionTest extends TestCase
         yield ["\0".'12'."\n\r\t", '"\\00012\\010\\013\\009"'];
         yield ["\x7f\x80\xff", '"\\127\\128\\255"'];
         yield ['hello', '"hello"'];
+        yield 'emoji' => ['🚀', '"\240\159\154\128"'];
+        yield 'Russian UTF-8' => ['Яё', '"\208\175\209\145"'];
+        yield 'Japanese UTF-8' => ['日', '"\230\151\165"'];
+        yield 'Windows-1251' => ["\xCF\xF0\xE8\xE2\xE5\xF2", '"\207\240\232\226\229\242"'];
+        yield 'UTF-16LE' => ["\xFF\xFEA\x00", '"\255\254A\000"'];
+        yield 'invalid UTF-8' => ["\xC0\xAF", '"\192\175"'];
+        yield 'combining mark' => ["e\u{0301}", '"e\204\129"'];
         yield [[], '{}'];
         yield [[1, false, null], '{1, false, nil}'];
         yield [['x' => [2]], '{["x"] = {2}}'];

@@ -151,8 +151,15 @@ line from accidentally continuing the previous expression.
 
 Empty arrays become `{}`. Quotes, backslashes, and table keys are escaped.
 Control and non-ASCII bytes use three-digit decimal escapes, preserving UTF-8,
-NUL bytes, and arbitrary binary input. Floats use 17 significant digits independent
-of PHP precision settings and locale; output may be longer than the PHP input.
+NUL bytes, and arbitrary binary input. Strings are byte sequences: the builder does
+not detect encodings, transcode, validate UTF-8, or normalize Unicode. Windows-1251,
+Shift-JIS, UTF-16, and malformed UTF-8 are preserved exactly, including BOMs. Convert
+text to the encoding your consumer expects before passing it to the builder.
+The same rules apply to table keys: visually identical strings with different byte
+sequences remain distinct. Lua string length counts bytes, not characters or emoji.
+
+Floats use 17 significant digits independent of PHP precision settings and locale;
+output may be longer than the PHP input.
 
 Lua's data model still applies: `nil` removes table entries, holes have no reliable
 `#` length, and Lua 5.1's usual doubles cannot represent every 64-bit PHP integer
